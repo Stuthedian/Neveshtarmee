@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="MauiApp2.MainPage">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="5*"/>
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+
+        <ScrollView Grid.Row="0" Grid.Column="0" Orientation="Both">
+            <VerticalStackLayout Padding="30,0" Spacing="25" >
+                <Label x:Name="rootlabel"
+                    Text="Hello, World!"
+                    Style="{StaticResource Headline}"
+                    SemanticProperties.HeadingLevel="Level1" />
+                <VerticalStackLayout x:Name="rootVSL">
+                    <HorizontalStackLayout x:Name="rootHSL">
+                        <Label Text="•" VerticalTextAlignment="Center" FontSize="26" />
+                        <Entry Completed="Entry_Completed"  Focused="Entry_Focused"></Entry>
+                    </HorizontalStackLayout>
+                </VerticalStackLayout>
+            </VerticalStackLayout>
+        </ScrollView>
+        <ScrollView Grid.Row="1" Grid.Column="0" Orientation="Horizontal">
+            <HorizontalStackLayout Spacing="1">
+                <Button
+                     x:Name="LoadBtn"
+                     Text="Load file" 
+                     Clicked="LoadBut_Clicked"/>
+                <Button x:Name="saveBut" Text="Save and upload file" Clicked="saveBut_Clicked" IsEnabled="False"/>
+                <Button x:Name="tabBut" Text="tabulate" Clicked="tabBut_Clicked"/>
+                <Button x:Name="unTabBut" Text="untabulate" Clicked="unTabBut_Clicked"/>
+                <Button x:Name="unColBut" Text="(un)Collapse" Clicked="unColBut_Clicked"/>
+                <Button x:Name="backupBut" Text="Backup" Clicked="backupBut_Clicked"/>
+                <Button x:Name="authBut" Text="auth" Clicked="authBut_Clicked"/>
+                <Button x:Name="resetAuthBut" Text="reset auth" Clicked="resetAuthBut_Clicked"/>
+            </HorizontalStackLayout>
+        </ScrollView>
+    </Grid>
+</ContentPage>
