@@ -73,17 +73,17 @@ namespace MauiApp2
 
         private void LoadBut_Clicked(object? sender, EventArgs e)
         {
-            GetAsync(httpClient, rootVSL, this);
+            GetAsync(httpClient, rootVSL, this, statuslabel);
             saveBut.IsEnabled = true;
         }
 
-        static async Task GetAsync(HttpClient httpClient, VerticalStackLayout rootVsl, MainPage main)
+        static async Task GetAsync(HttpClient httpClient, VerticalStackLayout rootVsl, MainPage main, Label statuslabel)
         {
             using HttpResponseMessage response = await httpClient.GetAsync("data.xml");
          
             var result = await response.Content.ReadAsStringAsync();
-           
-             using (StreamWriter sw = File.CreateText(Path.Combine(FileSystem.AppDataDirectory, "data.xml")))
+            statuslabel.Text = response.StatusCode.ToString();
+            using (StreamWriter sw = File.CreateText(Path.Combine(FileSystem.AppDataDirectory, "data.xml")))
             {
                 sw.Write(result);
             }
@@ -119,7 +119,7 @@ namespace MauiApp2
             }
         }
 
-        static async Task PutAsync(HttpClient httpClient, XDocument doc,  string filepath, string filename)
+        static async Task PutAsync(HttpClient httpClient, XDocument doc,  string filepath, string filename, Label statuslabel)
         {
             StringContent stringContent = new StringContent(doc.ToString(), Encoding.UTF8, "application/binary");
             
@@ -140,6 +140,7 @@ namespace MauiApp2
             stream.Close();
 
             using HttpResponseMessage httpResponse = await httpClient.SendAsync(putmsg);
+            statuslabel.Text = httpResponse.StatusCode.ToString();
         }
 
         private void tabBut_Clicked(object? sender, EventArgs e)
@@ -320,7 +321,7 @@ namespace MauiApp2
             string filepath = Path.Combine(FileSystem.AppDataDirectory, xml_doc);
             doc.Save(filepath);
 
-            PutAsync(httpClient, doc, filepath, xml_doc);
+            PutAsync(httpClient, doc, filepath, xml_doc, statuslabel);
         }
 
         private void recordLayer(VerticalStackLayout vsl, XElement parentXmlLayer)
@@ -359,7 +360,7 @@ namespace MauiApp2
                 + DateTime.Now.Second.ToString() + DateTime.Now.Millisecond.ToString();
             string filepath = Path.Combine(FileSystem.AppDataDirectory, "data" + filepostfix + ".xml");
             doc.Save(filepath);
-            PutAsync(httpClient, doc, filepath, "data" + filepostfix + ".xml");
+            PutAsync(httpClient, doc, filepath, "data" + filepostfix + ".xml", statuslabel);
 
             File.Delete(filepath);
         }
