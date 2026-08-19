@@ -79,21 +79,29 @@ namespace MauiApp2
 
         static async Task GetAsync(HttpClient httpClient, VerticalStackLayout rootVsl, MainPage main, Label statuslabel)
         {
-            using HttpResponseMessage response = await httpClient.GetAsync("data.xml");
-         
-            var result = await response.Content.ReadAsStringAsync();
-            statuslabel.Text = response.StatusCode.ToString();
-            using (StreamWriter sw = File.CreateText(Path.Combine(FileSystem.AppDataDirectory, "data.xml")))
+            HttpResponseMessage response = null;
+            try
             {
-                sw.Write(result);
+               response = await httpClient.GetAsync("data.xml");
+
+               var result = await response.Content.ReadAsStringAsync();
+               statuslabel.Text = response.StatusCode.ToString();
+               using (StreamWriter sw = File.CreateText(Path.Combine(FileSystem.AppDataDirectory, "data.xml")))
+               {
+                   sw.Write(result);
+               }
+               XDocument doc = XDocument.Load(Path.Combine(FileSystem.AppDataDirectory, "data.xml"));
+               XElement root = doc.Element("root");
+               XElement items = root.Element("items");
+               XElement layer = items.Element("layer");
+
+               rootVsl.Clear();
+               main.readLayer(layer, rootVsl);
             }
-            XDocument doc = XDocument.Load(Path.Combine(FileSystem.AppDataDirectory, "data.xml"));
-            XElement root = doc.Element("root");
-            XElement items = root.Element("items");
-            XElement layer = items.Element("layer");
-            
-            rootVsl.Clear();
-            main.readLayer(layer, rootVsl);        
+            catch (Exception e)
+            {
+                statuslabel.Text = e.Message;
+            }          
         }
 
         private void readLayer(XElement layer, VerticalStackLayout vsl)
@@ -139,8 +147,16 @@ namespace MauiApp2
 
             stream.Close();
 
-            using HttpResponseMessage httpResponse = await httpClient.SendAsync(putmsg);
-            statuslabel.Text = httpResponse.StatusCode.ToString();
+            HttpResponseMessage httpResponse = null;
+            try
+            {
+                httpResponse = await httpClient.SendAsync(putmsg);
+                statuslabel.Text = httpResponse.StatusCode.ToString();
+            }
+            catch (Exception ex)
+            {
+                statuslabel.Text = ex.Message;
+            }            
         }
 
         private void tabBut_Clicked(object? sender, EventArgs e)
@@ -412,6 +428,17 @@ namespace MauiApp2
         {
             httpClient.DefaultRequestHeaders.Add("Authorization",
                 "Basic " + Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(login + ":" + password)));
+        }
+
+        private void statuslabel_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == "Text")
+            {
+                var timer = Application.Current.Dispatcher.CreateTimer();
+                timer.Interval = TimeSpan.FromSeconds(10);
+                timer.Tick += (s, e) => { statuslabel.PropertyChanged -= statuslabel_PropertyChanged;  statuslabel.Text = ""; statuslabel.PropertyChanged += statuslabel_PropertyChanged; };
+                timer.Start();
+            }
         }
     }
 }

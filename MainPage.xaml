@@ -42,6 +42,6 @@
                 <Button x:Name="resetAuthBut" Text="reset auth" Clicked="resetAuthBut_Clicked"/>
             </HorizontalStackLayout>
         </ScrollView>
-        <Label x:Name="statuslabel" Grid.Row="2" Grid.Column="0" Text=""/>
+        <Label x:Name="statuslabel" Grid.Row="2" Grid.Column="0" Text="" PropertyChanged="statuslabel_PropertyChanged"/>
     </Grid>
 </ContentPage>
