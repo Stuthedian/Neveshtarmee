@@ -26,6 +26,8 @@ namespace MauiApp2
             {
                 authBut_Clicked(new object(), new EventArgs());
             }
+
+            grid.Add(new NewContent1(null), 0, 2);
         }
 
         private async Task createAuth(string? site, string? login, string? password)

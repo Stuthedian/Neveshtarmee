@@ -5,7 +5,7 @@
     <VerticalStackLayout x:Name="cvvsl">
         <HorizontalStackLayout>
             <Label Text="•" VerticalTextAlignment="Center" FontSize="26"/>
-            <Entry Text="contentviewtext"></Entry>
+            <Entry Text="contentviewtext" Completed="Entry_Completed"></Entry>
         </HorizontalStackLayout>
     </VerticalStackLayout>
 </ContentView>
