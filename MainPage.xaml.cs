@@ -26,8 +26,10 @@ namespace MauiApp2
             {
                 authBut_Clicked(new object(), new EventArgs());
             }
-
-            grid.Add(new NewContent1(null), 0, 2);
+            ScrollView scrollView = new ScrollView();
+            grid.Add(scrollView, 0, 2);
+            scrollView.Content = (new NewContent1(null));
+            //grid.Add(, 0, 2);
         }
 
         private async Task createAuth(string? site, string? login, string? password)
@@ -199,6 +201,62 @@ namespace MauiApp2
             }
         }
 
+        public void drumbut(object? sender, EventArgs e)
+        {
+            Entry? entry = ((grid.Children.Last() as ScrollView).Content as NewContent1).LastFocused;
+            if (entry == null)
+            {
+                return;
+            }
+
+            HorizontalStackLayout hsl = (entry.Parent as HorizontalStackLayout);
+            VerticalStackLayout vsl = (hsl.Parent as VerticalStackLayout);
+
+            int index = vsl.IndexOf(hsl);
+            if (index == 0)
+            {
+                return;
+            }
+
+            NewContent1? childVsl = null;
+            if (vsl.Children.Count > index + 1
+                && vsl.Children[index + 1] is NewContent1)
+            {
+                childVsl = (NewContent1)vsl.Children[index + 1];
+                vsl.Remove(childVsl);
+            }
+
+            if (vsl.Children[index - 1] is HorizontalStackLayout)
+            {
+                HorizontalStackLayout uphsl = (HorizontalStackLayout)vsl.Children[index - 1];
+                ((Label)uphsl.Children[0]).Text = "˅";
+            }
+
+            vsl.Remove(hsl);
+
+            if (vsl.Children[index - 1] is NewContent1)
+            {
+                NewContent1 newc = (NewContent1)vsl.Children[index - 1];
+                (newc.Content as VerticalStackLayout).Add(hsl);
+                if (childVsl is not null)
+                {
+                    (newc.Content as VerticalStackLayout).Add(childVsl);
+                }
+            }
+            else
+            {
+                NewContent1 newc = new NewContent1(vsl.Parent as NewContent1);
+                //newVsl.Padding = new Thickness(vslParent.Padding.Left + 10, vslParent.Padding.Top, vslParent.Padding.Right, vslParent.Padding.Bottom);
+
+                (newc.Content as VerticalStackLayout).Add(hsl);
+                if (childVsl is not null)
+                {
+                    //childVsl.Padding = new Thickness(newVsl.Padding.Left + 10, newVsl.Padding.Top, newVsl.Padding.Right, newVsl.Padding.Bottom);
+                    (newc.Content as VerticalStackLayout).Add(childVsl);
+                }
+                vsl.Insert(index, newc);
+            }
+        }
         private void Entry_Focused(object? sender, FocusEventArgs e)
         {
             lastFocused = (Entry?)sender;

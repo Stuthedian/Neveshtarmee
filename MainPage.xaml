@@ -5,9 +5,9 @@
              x:Class="MauiApp2.MainPage">
     <Grid x:Name="grid">
         <Grid.RowDefinitions>
-            <RowDefinition Height="5*"/>
+            <RowDefinition Height="*"/>
             <RowDefinition Height="*" />
-            <RowDefinition Height="*" />
+            <RowDefinition Height="3*" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
@@ -34,7 +34,8 @@
                      Text="Load file" 
                      Clicked="LoadBut_Clicked"/>
                 <Button x:Name="saveBut" Text="Save and upload file" Clicked="saveBut_Clicked" IsEnabled="False"/>
-                <Button x:Name="tabBut" Text="tabulate" Clicked="tabBut_Clicked"/>
+                <!--<Button x:Name="tabBut" Text="tabulate" Clicked="tabBut_Clicked"/>-->
+                <Button x:Name="tabBut" Text="tabulate" Clicked="drumbut"/>
                 <Button x:Name="unTabBut" Text="untabulate" Clicked="unTabBut_Clicked"/>
                 <Button x:Name="unColBut" Text="(un)Collapse" Clicked="unColBut_Clicked"/>
                 <Button x:Name="backupBut" Text="Backup" Clicked="backupBut_Clicked"/>
@@ -42,6 +43,5 @@
                 <Button x:Name="resetAuthBut" Text="reset auth" Clicked="resetAuthBut_Clicked"/>
             </HorizontalStackLayout>
         </ScrollView>
-        <!--<controls:NewContent1 Grid.Row="2" Grid.Column="0" ></controls:NewContent1>-->
     </Grid>
 </ContentPage>
