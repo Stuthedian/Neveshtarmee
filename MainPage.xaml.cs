@@ -28,8 +28,16 @@ namespace MauiApp2
             }
             ScrollView scrollView = new ScrollView();
             grid.Add(scrollView, 0, 2);
-            scrollView.Content = (new NewContent1(null));
+            //scrollView.Content = (new NewContent1(null));
             //grid.Add(, 0, 2);
+            UnrecordCollection unrec = new UnrecordCollection();
+            scrollView.Content = unrec;
+            unrec.addchild();
+            unrec.addchild();
+            unrec.addchild();
+            unrec.addchild();
+            unrec.addchild();
+
         }
 
         private async Task createAuth(string? site, string? login, string? password)
