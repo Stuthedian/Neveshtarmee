@@ -26,17 +26,17 @@ namespace MauiApp2
             {
                 authBut_Clicked(new object(), new EventArgs());
             }
-            ScrollView scrollView = new ScrollView();
-            grid.Add(scrollView, 0, 2);
-            //scrollView.Content = (new NewContent1(null));
-            //grid.Add(, 0, 2);
-            UnrecordCollection unrec = new UnrecordCollection();
-            scrollView.Content = unrec;
-            unrec.addchild();
-            unrec.addchild();
-            unrec.addchild();
-            unrec.addchild();
-            unrec.addchild();
+            //ScrollView scrollView = new ScrollView();
+            //grid.Add(scrollView, 0, 2);
+            ////scrollView.Content = (new NewContent1(null));
+            ////grid.Add(, 0, 2);
+            //UnrecordCollection unrec = new UnrecordCollection();
+            //scrollView.Content = unrec;
+            MainRecordCollection.addchild("1");
+            MainRecordCollection.addchild("2");
+            MainRecordCollection.addchild("3");
+            MainRecordCollection.addchild("4");
+            MainRecordCollection.addchild("5");
 
         }
 
@@ -156,115 +156,116 @@ namespace MauiApp2
 
         private void tabBut_Clicked(object? sender, EventArgs e)
         {
-            if (lastFocused is not null && sender is not null)
-            {
-                HorizontalStackLayout hslParent = (HorizontalStackLayout)lastFocused.Parent;
-                VerticalStackLayout vslParent = (VerticalStackLayout)hslParent.Parent;
+            MainRecordCollection.tabchild();
+            //if (lastFocused is not null && sender is not null)
+            //{
+            //    HorizontalStackLayout hslParent = (HorizontalStackLayout)lastFocused.Parent;
+            //    VerticalStackLayout vslParent = (VerticalStackLayout)hslParent.Parent;
                                 
-                int index = vslParent.IndexOf(hslParent);
-                if (index == 0)
-                {
-                    return;
-                }
+            //    int index = vslParent.IndexOf(hslParent);
+            //    if (index == 0)
+            //    {
+            //        return;
+            //    }
 
-                VerticalStackLayout? childVsl = null;
-                if (vslParent.Children.Count > index + 1
-                    && vslParent.Children[index+1] is VerticalStackLayout)
-                {
-                    childVsl = (VerticalStackLayout)vslParent.Children[index+1];
-                    vslParent.Remove(childVsl);
-                }
+            //    VerticalStackLayout? childVsl = null;
+            //    if (vslParent.Children.Count > index + 1
+            //        && vslParent.Children[index+1] is VerticalStackLayout)
+            //    {
+            //        childVsl = (VerticalStackLayout)vslParent.Children[index+1];
+            //        vslParent.Remove(childVsl);
+            //    }
 
-                if (vslParent.Children[index - 1] is HorizontalStackLayout)
-                {
-                    HorizontalStackLayout uphsl = (HorizontalStackLayout)vslParent.Children[index - 1];
-                    ((Label)uphsl.Children[0]).Text = "˅";
-                }
+            //    if (vslParent.Children[index - 1] is HorizontalStackLayout)
+            //    {
+            //        HorizontalStackLayout uphsl = (HorizontalStackLayout)vslParent.Children[index - 1];
+            //        ((Label)uphsl.Children[0]).Text = "˅";
+            //    }
 
-                vslParent.Remove(hslParent);
+            //    vslParent.Remove(hslParent);
 
-                VerticalStackLayout newVsl;
-                if (vslParent.Children[index-1] is VerticalStackLayout)
-                {
-                    newVsl = (VerticalStackLayout)vslParent.Children[index - 1];
-                    newVsl.Add(hslParent);
-                    if (childVsl is not null)
-                    {
-                        newVsl.Add(childVsl);
-                    }
-                }
-                else
-                {
-                    newVsl = new VerticalStackLayout();
-                    newVsl.Padding = new Thickness(vslParent.Padding.Left + 10, vslParent.Padding.Top, vslParent.Padding.Right, vslParent.Padding.Bottom);
+            //    VerticalStackLayout newVsl;
+            //    if (vslParent.Children[index-1] is VerticalStackLayout)
+            //    {
+            //        newVsl = (VerticalStackLayout)vslParent.Children[index - 1];
+            //        newVsl.Add(hslParent);
+            //        if (childVsl is not null)
+            //        {
+            //            newVsl.Add(childVsl);
+            //        }
+            //    }
+            //    else
+            //    {
+            //        newVsl = new VerticalStackLayout();
+            //        newVsl.Padding = new Thickness(vslParent.Padding.Left + 10, vslParent.Padding.Top, vslParent.Padding.Right, vslParent.Padding.Bottom);
 
-                    newVsl.Add(hslParent);
-                    if (childVsl is not null)
-                    {
-                        childVsl.Padding = new Thickness(newVsl.Padding.Left + 10, newVsl.Padding.Top, newVsl.Padding.Right, newVsl.Padding.Bottom);
-                        newVsl.Add(childVsl);
-                    }
-                    vslParent.Insert(index, newVsl);
-                }               
-            }
+            //        newVsl.Add(hslParent);
+            //        if (childVsl is not null)
+            //        {
+            //            childVsl.Padding = new Thickness(newVsl.Padding.Left + 10, newVsl.Padding.Top, newVsl.Padding.Right, newVsl.Padding.Bottom);
+            //            newVsl.Add(childVsl);
+            //        }
+            //        vslParent.Insert(index, newVsl);
+            //    }               
+            //}
         }
 
-        public void drumbut(object? sender, EventArgs e)
-        {
-            Entry? entry = ((grid.Children.Last() as ScrollView).Content as NewContent1).LastFocused;
-            if (entry == null)
-            {
-                return;
-            }
+        //public void drumbut(object? sender, EventArgs e)
+        //{
+        //    Entry? entry = ((grid.Children.Last() as ScrollView).Content as NewContent1).LastFocused;
+        //    if (entry == null)
+        //    {
+        //        return;
+        //    }
 
-            HorizontalStackLayout hsl = (entry.Parent as HorizontalStackLayout);
-            VerticalStackLayout vsl = (hsl.Parent as VerticalStackLayout);
+        //    HorizontalStackLayout hsl = (entry.Parent as HorizontalStackLayout);
+        //    VerticalStackLayout vsl = (hsl.Parent as VerticalStackLayout);
 
-            int index = vsl.IndexOf(hsl);
-            if (index == 0)
-            {
-                return;
-            }
+        //    int index = vsl.IndexOf(hsl);
+        //    if (index == 0)
+        //    {
+        //        return;
+        //    }
 
-            NewContent1? childVsl = null;
-            if (vsl.Children.Count > index + 1
-                && vsl.Children[index + 1] is NewContent1)
-            {
-                childVsl = (NewContent1)vsl.Children[index + 1];
-                vsl.Remove(childVsl);
-            }
+        //    NewContent1? childVsl = null;
+        //    if (vsl.Children.Count > index + 1
+        //        && vsl.Children[index + 1] is NewContent1)
+        //    {
+        //        childVsl = (NewContent1)vsl.Children[index + 1];
+        //        vsl.Remove(childVsl);
+        //    }
 
-            if (vsl.Children[index - 1] is HorizontalStackLayout)
-            {
-                HorizontalStackLayout uphsl = (HorizontalStackLayout)vsl.Children[index - 1];
-                ((Label)uphsl.Children[0]).Text = "˅";
-            }
+        //    if (vsl.Children[index - 1] is HorizontalStackLayout)
+        //    {
+        //        HorizontalStackLayout uphsl = (HorizontalStackLayout)vsl.Children[index - 1];
+        //        ((Label)uphsl.Children[0]).Text = "˅";
+        //    }
 
-            vsl.Remove(hsl);
+        //    vsl.Remove(hsl);
 
-            if (vsl.Children[index - 1] is NewContent1)
-            {
-                NewContent1 newc = (NewContent1)vsl.Children[index - 1];
-                (newc.Content as VerticalStackLayout).Add(hsl);
-                if (childVsl is not null)
-                {
-                    (newc.Content as VerticalStackLayout).Add(childVsl);
-                }
-            }
-            else
-            {
-                NewContent1 newc = new NewContent1(vsl.Parent as NewContent1);
-                //newVsl.Padding = new Thickness(vslParent.Padding.Left + 10, vslParent.Padding.Top, vslParent.Padding.Right, vslParent.Padding.Bottom);
+        //    if (vsl.Children[index - 1] is NewContent1)
+        //    {
+        //        NewContent1 newc = (NewContent1)vsl.Children[index - 1];
+        //        (newc.Content as VerticalStackLayout).Add(hsl);
+        //        if (childVsl is not null)
+        //        {
+        //            (newc.Content as VerticalStackLayout).Add(childVsl);
+        //        }
+        //    }
+        //    else
+        //    {
+        //        NewContent1 newc = new NewContent1(vsl.Parent as NewContent1);
+        //        //newVsl.Padding = new Thickness(vslParent.Padding.Left + 10, vslParent.Padding.Top, vslParent.Padding.Right, vslParent.Padding.Bottom);
 
-                (newc.Content as VerticalStackLayout).Add(hsl);
-                if (childVsl is not null)
-                {
-                    //childVsl.Padding = new Thickness(newVsl.Padding.Left + 10, newVsl.Padding.Top, newVsl.Padding.Right, newVsl.Padding.Bottom);
-                    (newc.Content as VerticalStackLayout).Add(childVsl);
-                }
-                vsl.Insert(index, newc);
-            }
-        }
+        //        (newc.Content as VerticalStackLayout).Add(hsl);
+        //        if (childVsl is not null)
+        //        {
+        //            //childVsl.Padding = new Thickness(newVsl.Padding.Left + 10, newVsl.Padding.Top, newVsl.Padding.Right, newVsl.Padding.Bottom);
+        //            (newc.Content as VerticalStackLayout).Add(childVsl);
+        //        }
+        //        vsl.Insert(index, newc);
+        //    }
+        //}
         private void Entry_Focused(object? sender, FocusEventArgs e)
         {
             lastFocused = (Entry?)sender;
@@ -315,36 +316,38 @@ namespace MauiApp2
 
         private void unTabBut_Clicked(object sender, EventArgs e)
         {
-            if (lastFocused is not null)
-            {
-                HorizontalStackLayout hslParent = (HorizontalStackLayout)lastFocused.Parent;
-                VerticalStackLayout vslParent = (VerticalStackLayout)hslParent.Parent;
+            MainRecordCollection.untabchild();
 
-                if (vslParent == rootVSL)
-                {
-                    return;
-                }
+            //if (lastFocused is not null)
+            //{
+            //    HorizontalStackLayout hslParent = (HorizontalStackLayout)lastFocused.Parent;
+            //    VerticalStackLayout vslParent = (VerticalStackLayout)hslParent.Parent;
 
-                VerticalStackLayout targetVsl = (VerticalStackLayout)vslParent.Parent;
+            //    if (vslParent == rootVSL)
+            //    {
+            //        return;
+            //    }
 
-                vslParent.Remove(hslParent);
+            //    VerticalStackLayout targetVsl = (VerticalStackLayout)vslParent.Parent;
 
-                int index = targetVsl.IndexOf(vslParent);
-                targetVsl.Insert(index+1, hslParent);
-                IView? child = vslParent.Children.Count > 0 ? vslParent.Children[0] : null;
-                if (child is not null && child is VerticalStackLayout)
-                {       
-                    ((VerticalStackLayout)child).Padding 
-                        = new Thickness(targetVsl.Padding.Left + 10, targetVsl.Padding.Top, targetVsl.Padding.Right, targetVsl.Padding.Bottom);
-                    vslParent.RemoveAt(0);
-                    targetVsl.Insert(index + 1 + 1, child);
-                }
+            //    vslParent.Remove(hslParent);
 
-                if (vslParent.Children.Count == 0)
-                {
-                    targetVsl.Remove(vslParent);
-                }
-            }
+            //    int index = targetVsl.IndexOf(vslParent);
+            //    targetVsl.Insert(index+1, hslParent);
+            //    IView? child = vslParent.Children.Count > 0 ? vslParent.Children[0] : null;
+            //    if (child is not null && child is VerticalStackLayout)
+            //    {       
+            //        ((VerticalStackLayout)child).Padding 
+            //            = new Thickness(targetVsl.Padding.Left + 10, targetVsl.Padding.Top, targetVsl.Padding.Right, targetVsl.Padding.Bottom);
+            //        vslParent.RemoveAt(0);
+            //        targetVsl.Insert(index + 1 + 1, child);
+            //    }
+
+            //    if (vslParent.Children.Count == 0)
+            //    {
+            //        targetVsl.Remove(vslParent);
+            //    }
+            //}
         }
 
         private void unColBut_Clicked(object sender, EventArgs e)
