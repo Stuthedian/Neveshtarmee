@@ -9,112 +9,119 @@ using static System.Net.Mime.MediaTypeNames;
 
 namespace MauiApp2
 {
-    public class RecordCollection : VerticalStackLayout
+    //public class RecordCollection : VerticalStackLayout
+    //{
+    //    public RecordCollection()
+    //    { 
+    //    }
+
+    //    public void addchild()
+    //    {
+    //        Add(new RecordEnhancer());
+    //        return;
+    //    }
+
+    //    public RecordEnhancer? getpreviouschild(RecordEnhancer re)
+    //    {
+    //        int childposition = IndexOf(re);
+    //        //if index == -1 throw an exception
+    //        if (childposition == 0)
+    //        {
+    //            return null;
+    //        }
+    //        else
+    //        {
+    //            return Children[childposition - 1] as RecordEnhancer;
+    //        }
+    //    }
+    //}
+
+    //public class RecordEnhancer : VerticalStackLayout
+    //{
+    //    private Record record;
+    //    private VerticalStackLayout? childvsl;
+
+    //    public RecordEnhancer()
+    //    {
+    //        record = new Record();
+
+    //        Add(record);
+
+    //        childvsl = null;
+    //    }
+
+    //    public void addchildre(RecordEnhancer re)
+    //    {
+    //        if (childvsl == null)
+    //        {
+    //            childvsl = new VerticalStackLayout();
+    //            childvsl.Padding = new Thickness(childvsl.Padding.Left + 10, childvsl.Padding.Top, childvsl.Padding.Right, childvsl.Padding.Bottom);
+    //        }
+
+    //        childvsl.Add(re);
+    //    }
+    //}
+
+    //public class Record : HorizontalStackLayout
+    //{
+    //    private Label label;
+    //    private Entry entry;
+    //    public Record() 
+    //    { 
+    //        label = new Label();
+    //        label.Text = "•";
+    //        label.VerticalTextAlignment = TextAlignment.Center;
+    //        label.FontSize = 26;
+
+    //        Add(label);
+
+    //        entry = new Entry();
+    //        entry.Text = "";
+    //        //entry.Completed += Entry_Completed;
+    //        entry.Completed += Entry_Tabbed;
+    //        Add(entry);
+    //    }
+
+    //    private void Entry_Completed(object? sender, EventArgs e)
+    //    {
+    //        ((Parent as RecordEnhancer).Parent as RecordCollection).addchild();
+    //    }
+
+    //    private void Entry_Tabbed(object? sender, EventArgs e)
+    //    {
+    //        RecordEnhancer reparent = Parent as RecordEnhancer;
+    //        RecordCollection rcparent = reparent.Parent as RecordCollection;
+
+    //        RecordEnhancer? newre = rcparent.getpreviouschild(reparent);
+
+    //        if (newre != null) 
+    //        {
+    //            newre.addchildre(reparent);
+    //        }
+    //    }
+    //}
+
+    //should I actually inherit or maybe class composition would be better idea?
+    //if unrecordcollection is not inherited from vsl we wouldn't able to insert
+    //it in scrollview
+
+    //rename to recordviewer?
+    public class UnrecordCollection : VerticalStackLayout, ISuperable
     {
-        public RecordCollection()
-        { 
-        }
-
-        public void addchild()
-        {
-            Add(new RecordEnhancer());
-            return;
-        }
-
-        public RecordEnhancer? getpreviouschild(RecordEnhancer re)
-        {
-            int childposition = IndexOf(re);
-            //if index == -1 throw an exception
-            if (childposition == 0)
-            {
-                return null;
-            }
-            else
-            {
-                return Children[childposition - 1] as RecordEnhancer;
-            }
-        }
-    }
-
-    public class RecordEnhancer : VerticalStackLayout
-    {
-        private Record record;
-        private VerticalStackLayout? childvsl;
-
-        public RecordEnhancer()
-        {
-            record = new Record();
-
-            Add(record);
-
-            childvsl = null;
-        }
-
-        public void addchildre(RecordEnhancer re)
-        {
-            if (childvsl == null)
-            {
-                childvsl = new VerticalStackLayout();
-                childvsl.Padding = new Thickness(childvsl.Padding.Left + 10, childvsl.Padding.Top, childvsl.Padding.Right, childvsl.Padding.Bottom);
-            }
-
-            childvsl.Add(re);
-        }
-    }
-
-    public class Record : HorizontalStackLayout
-    {
-        private Label label;
-        private Entry entry;
-        public Record() 
-        { 
-            label = new Label();
-            label.Text = "•";
-            label.VerticalTextAlignment = TextAlignment.Center;
-            label.FontSize = 26;
-
-            Add(label);
-
-            entry = new Entry();
-            entry.Text = "";
-            //entry.Completed += Entry_Completed;
-            entry.Completed += Entry_Tabbed;
-            Add(entry);
-        }
-
-        private void Entry_Completed(object? sender, EventArgs e)
-        {
-            ((Parent as RecordEnhancer).Parent as RecordCollection).addchild();
-        }
-
-        private void Entry_Tabbed(object? sender, EventArgs e)
-        {
-            RecordEnhancer reparent = Parent as RecordEnhancer;
-            RecordCollection rcparent = reparent.Parent as RecordCollection;
-
-            RecordEnhancer? newre = rcparent.getpreviouschild(reparent);
-
-            if (newre != null) 
-            {
-                newre.addchildre(reparent);
-            }
-        }
-    }
-
-    public class UnrecordCollection : VerticalStackLayout
-    {
-        public Unrecord? lastFocused;
-        public List<Unrecord> childunrecords;//unify usage of this list and getpreviouschild method by common Interface? (IChildable)
+        public Record? lastFocused;
+        public ISuperable? superrecord { get; set; }
+        public List<Record> subrecords {  get; set; }
         public UnrecordCollection()
         {
-            childunrecords = new List<Unrecord>();
+            subrecords = new List<Record>();
+            superrecord = null;
         }
 
         public void addchild(string text = "")
         {
-            Unrecord u = new Unrecord(null, text);
+            Record u = new Record(this, text);
             Add(u);
-            childunrecords.Add(u);
+            subrecords.Add(u);
             return;
         }
 
@@ -134,29 +141,45 @@ namespace MauiApp2
             }
         }
 
-        public Unrecord? getpreviouschild(Unrecord re)
+        public Record? getpreviousrecord(Record re)
         {
-            int childposition = childunrecords.IndexOf(re);
+            int argpos = subrecords.IndexOf(re);
             //if index == -1 throw an exception
-            if (childposition == 0)
+            if (argpos == 0)
             {
                 return null;
             }
             else
             {
-                return childunrecords[childposition - 1];
+                return subrecords[argpos - 1];
+            }
+        }
+
+        public Record? getnextrecord(Record re) 
+        {
+            int argpos = subrecords.IndexOf(re);
+            //if index == -1 throw an exception
+            if (argpos == subrecords.Count - 1)
+            {
+                return null;
+            }
+            else
+            {
+                return subrecords[argpos + 1];
             }
         }
     }
 
-    public class Unrecord : HorizontalStackLayout
+    public class Record : HorizontalStackLayout, ISuperable
     {
         private Label label;
         private Entry entry;
-        private List<Unrecord> childunrecords;
-        private Unrecord? parentunrec;
-        
-        public Unrecord(Unrecord? parent, string text)
+        //public List<Record> subrecords;
+        public ISuperable? superrecord { get; set; }//superrecord shouldn't point only to record, it should point anything that implements subrecords interface
+
+        public List<Record> subrecords { get; set; }
+
+        public Record(ISuperable super, string text)
         {
             label = new Label();
             label.Text = "•";
@@ -171,132 +194,168 @@ namespace MauiApp2
             entry.Focused += Entry_Focused;
             Add(entry);
 
-            childunrecords = new List<Unrecord>();
-            parentunrec = parent;
+            subrecords = new List<Record>();
+            superrecord = super;
         }
+
+        //public Record? getpreviousrecord(Record re)
+        //{
+        //    int argpos = subrecords.IndexOf(re);
+        //    //if index == -1 throw an exception
+        //    if (argpos == 0)
+        //    {
+        //        return null;
+        //    }
+        //    else
+        //    {
+        //        return subrecords[argpos - 1];
+        //    }
+        //}
+
+        //public Record? getnextrecord(Record re)
+        //{
+        //    int argpos = subrecords.IndexOf(re);
+        //    //if index == -1 throw an exception
+        //    if (argpos == subrecords.Count - 1)
+        //    {
+        //        return null;
+        //    }
+        //    else
+        //    {
+        //        return subrecords[argpos + 1];
+        //    }
+        //}
 
         private void shift()
         {
             Padding = new Thickness(Padding.Left + 10, Padding.Top, Padding.Right, Padding.Bottom);
-            foreach (Unrecord u in childunrecords)
+            foreach (Record r in subrecords)
             {
-                u.shift();
+                r.shift();
             }
         }
 
         private void unshift()
         {
             Padding = new Thickness(Padding.Left - 10, Padding.Top, Padding.Right, Padding.Bottom);
-            foreach (Unrecord u in childunrecords)
+            foreach (Record r in subrecords)
             {
-                u.unshift();
+                r.unshift();
             }
         }
 
         public void tab()
         {
-            if (parentunrec == null)
+            //Record? prevrec = null;
+            //List<Record>? oldlist = null;
+            //if (superrecord == null)
+            //{
+            //    UnrecordCollection unrec = Parent as UnrecordCollection;
+            //    prevrec = unrec.getpreviousrecord(this);
+            //    oldlist = unrec.subrecords;
+            //}
+            //else
+            //{
+            //    prevrec = superrecord.getpreviousrecord(this);
+            //    oldlist = superrecord.subrecords;
+            //}
+
+            ISuperable? prevrec = superrecord.getpreviousrecord(this);
+            List<ISuperable>? oldlist = superrecord.subrecords;
+
+            if (prevrec != null && oldlist != null)
             {
-                UnrecordCollection unrec = Parent as UnrecordCollection;
-                Unrecord? u = unrec.getpreviouschild(this);
-                if (u != null)
-                {
-                    unrec.childunrecords.Remove(this);
-                    u.childunrecords.Add(this);
-                    parentunrec = u;
-                    //batchcommit?
-                    shift();
-                }
+                oldlist.Remove(this);
+                prevrec.subrecords.Add(this);
+                superrecord = prevrec;
+
+                //batchcommit?
+                shift();
             }
-            else
-            {
-                //get previous child
-                int childposition = parentunrec.childunrecords.IndexOf(this);
-                //if index == -1 throw an exception
-                if (childposition != 0)
-                {
-                    Unrecord u = parentunrec.childunrecords[childposition - 1] as Unrecord;
-                    parentunrec.childunrecords.Remove(this);
-                    u.childunrecords.Add(this);
-                    parentunrec = u;
-                    shift();
-                }
-            }
+
+            return;
         }
 
         public void untab()
         {
-            if (parentunrec == null)
+            if (superrecord == null || superrecord.superrecord == null)
             {
                 return;
             }
-            //updateview();
 
 
+            //UnrecordCollection uc = Parent as UnrecordCollection;
+            //if (nextsuper == null)
+            //{
+            //    uc.Remove(this);
+            //    uc.Add(this);
+            //    movechildend();
+            //}
+            //else//dead branch because  nextsuper is always null for some reason
+            //{
+            //    int pos = uc.IndexOf(nextsuper);
+            //    uc.Remove(this);
+            //    uc.Insert(pos - 1, this);
+            //    movechild(nextsuper);
+            //}
 
-            Unrecord pu = parentunrec;
-            if (pu.parentunrec == null)
+            ISuperable sr = superrecord, ssr = superrecord.superrecord;
+            //Record? ssr = null;
+            //List<Record>? ssrsubrecords = null;
+            //if (sr.superrecord == null)
+            //{
+            //    ssr = null;
+            //    nextsuper = uc.getnextrecord(sr);
+            //    ssrsubrecords = uc.subrecords;
+            //}
+            //else
+            //{
+            //    ssr = sr.superrecord;
+            //    nextsuper = ssr.getnextrecord(sr);            
+            //    ssrsubrecords = ssr.subrecords;               
+            //}         
+
+            //if (ssrsubrecords != null)
+            //{
+            //    int parentpos = ssrsubrecords.IndexOf(sr);
+            //    sr.subrecords.Remove(this);
+            //    superrecord = ssr;
+            //    ssrsubrecords.Insert(parentpos + 1, this);
+            //}
+
+            UnrecordCollection uc = Parent as UnrecordCollection;
+            ISuperable? nextsuper = null;
+            nextsuper = ssr.getnextrecord(sr);
+            if (nextsuper == null)
             {
-                UnrecordCollection uc = Parent as UnrecordCollection;
-                int parentpos = uc.childunrecords.IndexOf(pu);
-                if (uc.childunrecords.Count == parentpos + 1)
-                {
-                    uc.Remove(this);
-                    uc.Add(this);
-                    movechildend();
-                }
-                else
-                {
-                    Unrecord nextchild = uc.childunrecords[parentpos + 1];
-                    int pos = uc.IndexOf(nextchild);
-                    uc.Remove(this);
-                    uc.Insert(pos-1, this);
-                    movechild(nextchild);
-                }
-
-                pu.childunrecords.Remove(this);
-                parentunrec = null;
-                uc.childunrecords.Insert(parentpos+1, this);
-                unshift();
-
-
+                uc.Remove(this);
+                uc.Add(this);
+                movechildend();
             }
-            else
+            else//dead branch because  nextsuper is always null for some reason
             {
-                UnrecordCollection uc = Parent as UnrecordCollection;
-                Unrecord ppu = pu.parentunrec;
-                int pparentpos = ppu.childunrecords.IndexOf(pu);
-                if (ppu.childunrecords.Count == pparentpos + 1)
-                {
-                    uc.Remove(this);
-                    uc.Add(this);
-                    movechildend();
-                }
-                else
-                {
-                    Unrecord nextchild = ppu.childunrecords[pparentpos + 1];
-                    int pos = uc.IndexOf(nextchild);
-                    uc.Remove(this);
-                    uc.Insert(pos - 1, this);
-                    movechild(nextchild);
-                }
-
-                
-                int parentpos = ppu.childunrecords.IndexOf(pu);
-                pu.childunrecords.Remove(this);
-                parentunrec = ppu;
-                ppu.childunrecords.Insert(parentpos + 1, this);
-                unshift();
-
-
+                int pos = uc.IndexOf(nextsuper);
+                uc.Remove(this);
+                uc.Insert(pos - 1, this);
+                movechild(nextsuper);
             }
+
+
+
+            int parentpos = ssr.subrecords.IndexOf(sr);
+            sr.subrecords.Remove(this);
+            superrecord = sr;
+            ssr.subrecords.Insert(parentpos + 1, this);
+
+
+            unshift();
         }
 
-        private void movechild(Unrecord flagrecord)
+        private void movechild(Record flagrecord)
         {
             UnrecordCollection uc = Parent as UnrecordCollection;
 
-            foreach (Unrecord child in childunrecords)
+            foreach (Record child in subrecords)
             {
                 int pos = uc.IndexOf(flagrecord);
                 uc.Remove(child);
@@ -308,24 +367,11 @@ namespace MauiApp2
         private void movechildend()
         {
             UnrecordCollection uc = Parent as UnrecordCollection;
-            foreach (Unrecord child in childunrecords)
+            foreach (Record child in subrecords)
             {
                 uc.Remove(child);
                 uc.Add(child);
                 child.movechildend();
-            }
-        }
-        private void updateview()
-        {
-            UnrecordCollection uc = Parent as UnrecordCollection;
-            Unrecord pu = parentunrec;
-            int viewpos = uc.Children.IndexOf(pu.lastchild());
-            uc.Remove(this);
-            uc.Insert(viewpos + 1, this);
-            int i = viewpos + 1 + 1;
-            foreach (var item in childunrecords)
-            {
-                i = item.move(i);
             }
         }
 
@@ -335,21 +381,50 @@ namespace MauiApp2
             uc.Remove(this);
             uc.Insert(pos, this);
             int i = pos + 1;
-            foreach (var item in childunrecords)
+            foreach (var item in subrecords)
             {
                 i = item.move(i);
             }
             return i;
         }
 
-        private Unrecord lastchild()
-        {
-            return childunrecords.Count == 0 ? this : childunrecords.Last().lastchild();
-        }
-
         private void Entry_Focused(object? sender, EventArgs e)
         {
             (Parent as UnrecordCollection).lastFocused = this;
+        }
+    }
+
+    public interface ISuperable
+    {
+        ISuperable? superrecord { get; set; }
+        List<ISuperable> subrecords { get; set; }
+
+        public ISuperable? getpreviousrecord(ISuperable re)
+        {
+            int argpos = subrecords.IndexOf(re);
+            //if index == -1 throw an exception
+            if (argpos == 0)
+            {
+                return null;
+            }
+            else
+            {
+                return subrecords[argpos - 1];
+            }
+        }
+
+        public ISuperable? getnextrecord(ISuperable re)
+        {
+            int argpos = subrecords.IndexOf(re);
+            //if index == -1 throw an exception
+            if (argpos == subrecords.Count - 1)
+            {
+                return null;
+            }
+            else
+            {
+                return subrecords[argpos + 1];
+            }
         }
     }
 }
