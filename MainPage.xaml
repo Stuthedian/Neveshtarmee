@@ -43,7 +43,7 @@
             </HorizontalStackLayout>
         </ScrollView>
         <ScrollView Grid.Row="2" Grid.Column="0" Orientation="Horizontal">
-            <controls:UnrecordCollection x:Name="MainRecordCollection"/>
+            <controls:RecordCollection x:Name="MainRecordCollection"/>
         </ScrollView>
     </Grid>
 </ContentPage>

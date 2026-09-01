@@ -32,11 +32,11 @@ namespace MauiApp2
             ////grid.Add(, 0, 2);
             //UnrecordCollection unrec = new UnrecordCollection();
             //scrollView.Content = unrec;
-            MainRecordCollection.addchild("1");
-            MainRecordCollection.addchild("2");
-            MainRecordCollection.addchild("3");
-            MainRecordCollection.addchild("4");
-            MainRecordCollection.addchild("5");
+            MainRecordCollection.addsubrecord("1");
+            MainRecordCollection.addsubrecord("2");
+            MainRecordCollection.addsubrecord("3");
+            MainRecordCollection.addsubrecord("4");
+            MainRecordCollection.addsubrecord("5");
 
         }
 
@@ -156,7 +156,7 @@ namespace MauiApp2
 
         private void tabBut_Clicked(object? sender, EventArgs e)
         {
-            MainRecordCollection.tabchild();
+            MainRecordCollection.tabrecord();
             //if (lastFocused is not null && sender is not null)
             //{
             //    HorizontalStackLayout hslParent = (HorizontalStackLayout)lastFocused.Parent;
@@ -316,7 +316,7 @@ namespace MauiApp2
 
         private void unTabBut_Clicked(object sender, EventArgs e)
         {
-            MainRecordCollection.untabchild();
+            MainRecordCollection.untabsubrecord();
 
             //if (lastFocused is not null)
             //{
