@@ -12,7 +12,7 @@ namespace MauiApp2
     public class RecordCollection : VerticalStackLayout
     {
         public Record? lastFocused;
-        public List<Record> subrecords;//unify usage of this list and getpreviouschild method by common Interface? (IChildable)
+        public List<Record> subrecords;
         public RecordCollection()
         {
             subrecords = new List<Record>();
@@ -42,6 +42,14 @@ namespace MauiApp2
             }
         }
 
+        public void collapserecord()
+        {
+            if (lastFocused != null)
+            {
+                lastFocused.collapse();
+            }
+        }
+
         public Record? getprevioussubrecord(Record re)
         {
             int childposition = subrecords.IndexOf(re);
@@ -63,6 +71,7 @@ namespace MauiApp2
         private Entry entry;
         private List<Record> subrecords;
         private Record? superrecord;
+        private bool collapsed;
         
         public Record(Record? parent, string text)
         {
@@ -75,12 +84,14 @@ namespace MauiApp2
 
             entry = new Entry();
             entry.Text = text;
-            //entry.Completed += Entry_Completed;
+            entry.Completed += Entry_Completed;
             entry.Focused += Entry_Focused;
             Add(entry);
 
             subrecords = new List<Record>();
             superrecord = parent;
+
+            collapsed = false;
         }
 
         private void shift()
@@ -138,9 +149,6 @@ namespace MauiApp2
             {
                 return;
             }
-            //updateview();
-
-
 
             Record pu = superrecord;
             if (pu.superrecord == null)
@@ -166,8 +174,6 @@ namespace MauiApp2
                 superrecord = null;
                 uc.subrecords.Insert(parentpos+1, this);
                 unshift();
-
-
             }
             else
             {
@@ -223,41 +229,50 @@ namespace MauiApp2
                 child.movechildend();
             }
         }
-        private void updateview()
+
+        public void collapse()
         {
-            RecordCollection uc = Parent as RecordCollection;
-            Record pu = superrecord;
-            int viewpos = uc.Children.IndexOf(pu.lastchild());
-            uc.Remove(this);
-            uc.Insert(viewpos + 1, this);
-            int i = viewpos + 1 + 1;
-            foreach (var item in subrecords)
-            {
-                i = item.move(i);
-            }
+            collapsed = !collapsed;
+            collapsesubs(collapsed);
         }
 
-        private int move(int pos)
+        public void collapsesubs(bool hide)
         {
-            RecordCollection uc = Parent as RecordCollection;
-            uc.Remove(this);
-            uc.Insert(pos, this);
-            int i = pos + 1;
-            foreach (var item in subrecords)
+            foreach (Record child in subrecords)
             {
-                i = item.move(i);
+                child.IsVisible = !hide;
+                child.collapsesubs(hide);
             }
-            return i;
-        }
-
-        private Record lastchild()
-        {
-            return subrecords.Count == 0 ? this : subrecords.Last().lastchild();
         }
 
         private void Entry_Focused(object? sender, EventArgs e)
         {
             (Parent as RecordCollection).lastFocused = this;
+        }
+
+        private void Entry_Completed(object? sender, EventArgs e)
+        {
+            Record? sr = superrecord;
+            RecordCollection rc = Parent as RecordCollection;
+            if (sr == null)
+            {
+                int pos = rc.subrecords.IndexOf(this);
+                int vpos =  rc.IndexOf(this);
+                Record newr = new Record(null, "");
+                rc.subrecords.Insert(pos+1, newr);
+                rc.Insert(vpos+1, newr);
+                newr.Focus();
+            }
+            else
+            {
+                int pos = sr.subrecords.IndexOf(this);
+                int vpos = rc.IndexOf(this);
+                Record newr = new Record(sr, "");
+                newr.Padding = Padding;
+                sr.subrecords.Insert(pos+1, newr);
+                rc.Insert(vpos+1, newr);
+                newr.Focus();
+            }
         }
     }
 }
