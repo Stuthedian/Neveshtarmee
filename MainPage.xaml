@@ -42,7 +42,7 @@
                 <Button x:Name="resetAuthBut" Text="reset auth" Clicked="resetAuthBut_Clicked"/>
             </HorizontalStackLayout>
         </ScrollView>
-        <ScrollView Grid.Row="2" Grid.Column="0" Orientation="Horizontal">
+        <ScrollView Grid.Row="2" Grid.Column="0" Orientation="Both">
             <controls:RecordCollection x:Name="MainRecordCollection"/>
         </ScrollView>
     </Grid>

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
 using static System.Net.Mime.MediaTypeNames;
 
 namespace MauiApp2
@@ -63,6 +64,22 @@ namespace MauiApp2
                 return subrecords[childposition - 1];
             }
         }
+
+        public void readLayer(XElement layer)
+        {
+            foreach (XElement entry in layer.Elements())
+            {
+                if (entry.Name == "entry")
+                {
+                    addsubrecord(entry.Value);
+                }
+                else
+                {
+                    Record r = subrecords.Last();
+                    r.readLayer(entry);
+                }
+            }
+        }
     }
 
     public class Record : HorizontalStackLayout
@@ -92,6 +109,31 @@ namespace MauiApp2
             superrecord = parent;
 
             collapsed = false;
+        }
+
+        public void addsubrecord(string text)
+        {
+            Record u = new Record(this, text);
+            RecordCollection rc = Parent as RecordCollection;
+            u.Padding = new Thickness(Padding.Left + 10, Padding.Top, Padding.Right, Padding.Bottom);
+            rc.Add(u);
+            subrecords.Add(u);
+        }
+
+        public void readLayer(XElement layer)
+        {
+            foreach (XElement entry in layer.Elements())
+            {
+                if (entry.Name == "entry")
+                {
+                    addsubrecord(entry.Value);
+                }
+                else
+                {
+                    Record r = subrecords.Last();
+                    r.readLayer(entry);
+                }
+            }
         }
 
         private void shift()

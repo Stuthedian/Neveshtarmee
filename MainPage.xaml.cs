@@ -86,7 +86,7 @@ namespace MauiApp2
         private void LoadBut_Clicked(object? sender, EventArgs e)
         {
             GetAsync(httpClient, rootVSL, this);
-            saveBut.IsEnabled = true;
+            //saveBut.IsEnabled = true;
         }
 
         static async Task GetAsync(HttpClient httpClient, VerticalStackLayout rootVsl, MainPage main)
@@ -104,8 +104,10 @@ namespace MauiApp2
             XElement items = root.Element("items");
             XElement layer = items.Element("layer");
             
-            rootVsl.Clear();
-            main.readLayer(layer, rootVsl);        
+            //rootVsl.Clear();
+            main.MainRecordCollection.Clear();
+            //main.readLayer(layer, rootVsl);
+            main.MainRecordCollection.readLayer(layer);
         }
 
         private void readLayer(XElement layer, VerticalStackLayout vsl)
@@ -297,30 +299,30 @@ namespace MauiApp2
         private void unColBut_Clicked(object sender, EventArgs e)
         {
             MainRecordCollection.collapserecord();
-            if (lastFocused is not null)
-            {
-                HorizontalStackLayout hslParent = (HorizontalStackLayout)lastFocused.Parent;
-                VerticalStackLayout vslParent = (VerticalStackLayout)hslParent.Parent;
+            //if (lastFocused is not null)
+            //{
+            //    HorizontalStackLayout hslParent = (HorizontalStackLayout)lastFocused.Parent;
+            //    VerticalStackLayout vslParent = (VerticalStackLayout)hslParent.Parent;
 
-                int index = vslParent.IndexOf(hslParent);
-                IView? nextchild = vslParent.Children.Count > index+1 ? vslParent.Children[index+1] : null;
-                if (nextchild is not null && nextchild is VerticalStackLayout)
-                {
-                    VerticalStackLayout subvsl = (VerticalStackLayout)nextchild;
-                    if (subvsl.IsVisible)
-                    {
-                        subvsl.IsVisible = false;
-                        ((Label)hslParent.Children[0]).Text = "˃";
-                    }
-                    else 
-                    {
-                        subvsl.IsVisible = true;
-                        ((Label)hslParent.Children[0]).Text = "˅";
-                    }
+            //    int index = vslParent.IndexOf(hslParent);
+            //    IView? nextchild = vslParent.Children.Count > index+1 ? vslParent.Children[index+1] : null;
+            //    if (nextchild is not null && nextchild is VerticalStackLayout)
+            //    {
+            //        VerticalStackLayout subvsl = (VerticalStackLayout)nextchild;
+            //        if (subvsl.IsVisible)
+            //        {
+            //            subvsl.IsVisible = false;
+            //            ((Label)hslParent.Children[0]).Text = "˃";
+            //        }
+            //        else 
+            //        {
+            //            subvsl.IsVisible = true;
+            //            ((Label)hslParent.Children[0]).Text = "˅";
+            //        }
                     
-                }
+            //    }
 
-            }
+            //}
         }
 
         private void saveBut_Clicked(object sender, EventArgs e)
