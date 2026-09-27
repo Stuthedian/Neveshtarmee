@@ -47,7 +47,9 @@ namespace MauiApp2
         {
             if (lastFocused != null)
             {
+                BatchBegin();
                 lastFocused.collapse();
+                BatchCommit();
             }
         }
 
@@ -88,7 +90,6 @@ namespace MauiApp2
         private Entry entry;
         private List<Record> subrecords;
         private Record? superrecord;
-        private bool collapsed;
         
         public Record(Record? parent, string text)
         {
@@ -107,8 +108,6 @@ namespace MauiApp2
 
             subrecords = new List<Record>();
             superrecord = parent;
-
-            collapsed = false;
         }
 
         public void addsubrecord(string text)
@@ -274,16 +273,10 @@ namespace MauiApp2
 
         public void collapse()
         {
-            collapsed = !collapsed;
-            collapsesubs(collapsed);
-        }
-
-        public void collapsesubs(bool hide)
-        {
             foreach (Record child in subrecords)
             {
-                child.IsVisible = !hide;
-                child.collapsesubs(hide);
+                child.IsVisible = !child.IsVisible;
+                child.collapse();
             }
         }
 
