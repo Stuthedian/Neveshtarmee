@@ -82,12 +82,24 @@ namespace MauiApp2
                 }
             }
         }
+
+        public void recordLayer(XElement parentXmlLayer)
+        {
+            XElement layer = new XElement("layer");
+            foreach (Record sub in subrecords)
+            {
+                XElement xEntry = new XElement("entry", sub.entry.Text);
+                layer.Add(xEntry);
+                sub.recordLayer(layer);
+            }
+            parentXmlLayer.Add(layer);
+        }
     }
 
     public class Record : HorizontalStackLayout
     {
         private Label label;
-        private Entry entry;
+        public Entry entry;
         private List<Record> subrecords;
         private Record? superrecord;
         
@@ -132,6 +144,21 @@ namespace MauiApp2
                     Record r = subrecords.Last();
                     r.readLayer(entry);
                 }
+            }
+        }
+
+        public void recordLayer(XElement parentXmlLayer)
+        {
+            if (subrecords.Count != 0)
+            {
+                XElement layer = new XElement("layer");
+                foreach (Record sub in subrecords)
+                {
+                    XElement xEntry = new XElement("entry", sub.entry.Text);
+                    layer.Add(xEntry);
+                    sub.recordLayer(layer);
+                }
+                parentXmlLayer.Add(layer);
             }
         }
 

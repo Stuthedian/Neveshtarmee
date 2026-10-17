@@ -86,7 +86,7 @@ namespace MauiApp2
         private void LoadBut_Clicked(object? sender, EventArgs e)
         {
             GetAsync(httpClient, rootVSL, this);
-            //saveBut.IsEnabled = true;
+            saveBut.IsEnabled = true;
         }
 
         static async Task GetAsync(HttpClient httpClient, VerticalStackLayout rootVsl, MainPage main)
@@ -106,6 +106,7 @@ namespace MauiApp2
             
             //rootVsl.Clear();
             main.MainRecordCollection.Clear();
+            main.MainRecordCollection.subrecords.Clear();
             //main.readLayer(layer, rootVsl);
             main.MainRecordCollection.readLayer(layer);
         }
@@ -332,7 +333,8 @@ namespace MauiApp2
 
             XElement xItems = new XElement("items");
 
-            recordLayer(rootVSL, xItems);
+            //recordLayer(rootVSL, xItems);
+            MainRecordCollection.recordLayer(xItems);
             root.Add(xItems);
             doc.Add(root);
             string filepath = Path.Combine(FileSystem.AppDataDirectory, xml_doc);
@@ -341,26 +343,26 @@ namespace MauiApp2
             PutAsync(httpClient, doc, filepath, xml_doc);
         }
 
-        private void recordLayer(VerticalStackLayout vsl, XElement parentXmlLayer)
-        {
-            XElement layer = new XElement("layer");
-            XAttribute xPadding = new XAttribute("padding", vsl.Padding.Left);
-            layer.Add(xPadding);
-            foreach (IView entry in vsl.Children)
-            {
-                if (entry is HorizontalStackLayout)
-                {
-                    XElement xEntry = new XElement("entry", ((Entry)((HorizontalStackLayout)entry).Children[1]).Text);
-                    layer.Add(xEntry);
-                }
-                else
-                {
-                    recordLayer((VerticalStackLayout)entry, layer);
-                }
-            }
+        //private void recordLayer(VerticalStackLayout vsl, XElement parentXmlLayer)
+        //{
+        //    XElement layer = new XElement("layer");
+        //    XAttribute xPadding = new XAttribute("padding", vsl.Padding.Left);
+        //    layer.Add(xPadding);
+        //    foreach (IView entry in vsl.Children)
+        //    {
+        //        if (entry is HorizontalStackLayout)
+        //        {
+        //            XElement xEntry = new XElement("entry", ((Entry)((HorizontalStackLayout)entry).Children[1]).Text);
+        //            layer.Add(xEntry);
+        //        }
+        //        else
+        //        {
+        //            recordLayer((VerticalStackLayout)entry, layer);
+        //        }
+        //    }
 
-            parentXmlLayer.Add(layer);
-        }
+        //    parentXmlLayer.Add(layer);
+        //}
 
         private void backupBut_Clicked(object sender, EventArgs e)
         {
@@ -368,7 +370,7 @@ namespace MauiApp2
             XElement root = new XElement("root");
 
             XElement xItems = new XElement("items");
-            recordLayer(rootVSL, xItems);
+            MainRecordCollection.recordLayer(xItems);
 
             root.Add(xItems);
             doc.Add(root);
