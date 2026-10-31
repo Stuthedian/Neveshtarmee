@@ -408,9 +408,12 @@ namespace MauiApp2
             }
             else
             {
-                site = ((rootVSL.Children[0] as HorizontalStackLayout).Children[1] as Entry).Text;
-                login = ((rootVSL.Children[1] as HorizontalStackLayout).Children[1] as Entry).Text;
-                password = ((rootVSL.Children[2] as HorizontalStackLayout).Children[1] as Entry).Text;
+                //site = ((rootVSL.Children[0] as HorizontalStackLayout).Children[1] as Entry).Text;
+                //login = ((rootVSL.Children[1] as HorizontalStackLayout).Children[1] as Entry).Text;
+                //password = ((rootVSL.Children[2] as HorizontalStackLayout).Children[1] as Entry).Text;
+                site = MainRecordCollection.subrecords[0].entry.Text;
+                login = MainRecordCollection.subrecords[1].entry.Text;
+                password = MainRecordCollection.subrecords[2].entry.Text;
                 createAuth(site, login, password);
                 authorized = true;
                 LoadBtn.IsEnabled = true;
