@@ -26,18 +26,8 @@ namespace MauiApp2
             {
                 authBut_Clicked(new object(), new EventArgs());
             }
-            //ScrollView scrollView = new ScrollView();
-            //grid.Add(scrollView, 0, 2);
-            ////scrollView.Content = (new NewContent1(null));
-            ////grid.Add(, 0, 2);
-            //UnrecordCollection unrec = new UnrecordCollection();
-            //scrollView.Content = unrec;
-            MainRecordCollection.addsubrecord("1");
-            MainRecordCollection.addsubrecord("2");
-            MainRecordCollection.addsubrecord("3");
-            MainRecordCollection.addsubrecord("4");
-            MainRecordCollection.addsubrecord("5");
 
+            MainRecordCollection.addsubrecord("");
         }
 
         private async Task createAuth(string? site, string? login, string? password)
@@ -85,17 +75,17 @@ namespace MauiApp2
 
         private void LoadBut_Clicked(object? sender, EventArgs e)
         {
-            GetAsync(httpClient, rootVSL, this);
+            GetAsync(httpClient, this);
             saveBut.IsEnabled = true;
         }
 
-        static async Task GetAsync(HttpClient httpClient, VerticalStackLayout rootVsl, MainPage main)
+        static async Task GetAsync(HttpClient httpClient, MainPage main)
         {
             using HttpResponseMessage response = await httpClient.GetAsync("data.xml");
          
             var result = await response.Content.ReadAsStringAsync();
            
-             using (StreamWriter sw = File.CreateText(Path.Combine(FileSystem.AppDataDirectory, "data.xml")))
+            using (StreamWriter sw = File.CreateText(Path.Combine(FileSystem.AppDataDirectory, "data.xml")))
             {
                 sw.Write(result);
             }
@@ -104,10 +94,9 @@ namespace MauiApp2
             XElement items = root.Element("items");
             XElement layer = items.Element("layer");
             
-            //rootVsl.Clear();
             main.MainRecordCollection.Clear();
             main.MainRecordCollection.subrecords.Clear();
-            //main.readLayer(layer, rootVsl);
+
             main.MainRecordCollection.readLayer(layer);
         }
 
@@ -160,57 +149,6 @@ namespace MauiApp2
         private void tabBut_Clicked(object? sender, EventArgs e)
         {
             MainRecordCollection.tabrecord();
-            //if (lastFocused is not null && sender is not null)
-            //{
-            //    HorizontalStackLayout hslParent = (HorizontalStackLayout)lastFocused.Parent;
-            //    VerticalStackLayout vslParent = (VerticalStackLayout)hslParent.Parent;
-                                
-            //    int index = vslParent.IndexOf(hslParent);
-            //    if (index == 0)
-            //    {
-            //        return;
-            //    }
-
-            //    VerticalStackLayout? childVsl = null;
-            //    if (vslParent.Children.Count > index + 1
-            //        && vslParent.Children[index+1] is VerticalStackLayout)
-            //    {
-            //        childVsl = (VerticalStackLayout)vslParent.Children[index+1];
-            //        vslParent.Remove(childVsl);
-            //    }
-
-            //    if (vslParent.Children[index - 1] is HorizontalStackLayout)
-            //    {
-            //        HorizontalStackLayout uphsl = (HorizontalStackLayout)vslParent.Children[index - 1];
-            //        ((Label)uphsl.Children[0]).Text = "˅";
-            //    }
-
-            //    vslParent.Remove(hslParent);
-
-            //    VerticalStackLayout newVsl;
-            //    if (vslParent.Children[index-1] is VerticalStackLayout)
-            //    {
-            //        newVsl = (VerticalStackLayout)vslParent.Children[index - 1];
-            //        newVsl.Add(hslParent);
-            //        if (childVsl is not null)
-            //        {
-            //            newVsl.Add(childVsl);
-            //        }
-            //    }
-            //    else
-            //    {
-            //        newVsl = new VerticalStackLayout();
-            //        newVsl.Padding = new Thickness(vslParent.Padding.Left + 10, vslParent.Padding.Top, vslParent.Padding.Right, vslParent.Padding.Bottom);
-
-            //        newVsl.Add(hslParent);
-            //        if (childVsl is not null)
-            //        {
-            //            childVsl.Padding = new Thickness(newVsl.Padding.Left + 10, newVsl.Padding.Top, newVsl.Padding.Right, newVsl.Padding.Bottom);
-            //            newVsl.Add(childVsl);
-            //        }
-            //        vslParent.Insert(index, newVsl);
-            //    }               
-            //}
         }
 
         private void Entry_Focused(object? sender, FocusEventArgs e)
@@ -264,66 +202,11 @@ namespace MauiApp2
         private void unTabBut_Clicked(object sender, EventArgs e)
         {
             MainRecordCollection.untabsubrecord();
-
-            //if (lastFocused is not null)
-            //{
-            //    HorizontalStackLayout hslParent = (HorizontalStackLayout)lastFocused.Parent;
-            //    VerticalStackLayout vslParent = (VerticalStackLayout)hslParent.Parent;
-
-            //    if (vslParent == rootVSL)
-            //    {
-            //        return;
-            //    }
-
-            //    VerticalStackLayout targetVsl = (VerticalStackLayout)vslParent.Parent;
-
-            //    vslParent.Remove(hslParent);
-
-            //    int index = targetVsl.IndexOf(vslParent);
-            //    targetVsl.Insert(index+1, hslParent);
-            //    IView? child = vslParent.Children.Count > 0 ? vslParent.Children[0] : null;
-            //    if (child is not null && child is VerticalStackLayout)
-            //    {       
-            //        ((VerticalStackLayout)child).Padding 
-            //            = new Thickness(targetVsl.Padding.Left + 10, targetVsl.Padding.Top, targetVsl.Padding.Right, targetVsl.Padding.Bottom);
-            //        vslParent.RemoveAt(0);
-            //        targetVsl.Insert(index + 1 + 1, child);
-            //    }
-
-            //    if (vslParent.Children.Count == 0)
-            //    {
-            //        targetVsl.Remove(vslParent);
-            //    }
-            //}
         }
 
         private void unColBut_Clicked(object sender, EventArgs e)
         {
             MainRecordCollection.collapserecord();
-            //if (lastFocused is not null)
-            //{
-            //    HorizontalStackLayout hslParent = (HorizontalStackLayout)lastFocused.Parent;
-            //    VerticalStackLayout vslParent = (VerticalStackLayout)hslParent.Parent;
-
-            //    int index = vslParent.IndexOf(hslParent);
-            //    IView? nextchild = vslParent.Children.Count > index+1 ? vslParent.Children[index+1] : null;
-            //    if (nextchild is not null && nextchild is VerticalStackLayout)
-            //    {
-            //        VerticalStackLayout subvsl = (VerticalStackLayout)nextchild;
-            //        if (subvsl.IsVisible)
-            //        {
-            //            subvsl.IsVisible = false;
-            //            ((Label)hslParent.Children[0]).Text = "˃";
-            //        }
-            //        else 
-            //        {
-            //            subvsl.IsVisible = true;
-            //            ((Label)hslParent.Children[0]).Text = "˅";
-            //        }
-                    
-            //    }
-
-            //}
         }
 
         private void saveBut_Clicked(object sender, EventArgs e)
@@ -333,7 +216,6 @@ namespace MauiApp2
 
             XElement xItems = new XElement("items");
 
-            //recordLayer(rootVSL, xItems);
             MainRecordCollection.recordLayer(xItems);
             root.Add(xItems);
             doc.Add(root);
@@ -342,27 +224,6 @@ namespace MauiApp2
 
             PutAsync(httpClient, doc, filepath, xml_doc);
         }
-
-        //private void recordLayer(VerticalStackLayout vsl, XElement parentXmlLayer)
-        //{
-        //    XElement layer = new XElement("layer");
-        //    XAttribute xPadding = new XAttribute("padding", vsl.Padding.Left);
-        //    layer.Add(xPadding);
-        //    foreach (IView entry in vsl.Children)
-        //    {
-        //        if (entry is HorizontalStackLayout)
-        //        {
-        //            XElement xEntry = new XElement("entry", ((Entry)((HorizontalStackLayout)entry).Children[1]).Text);
-        //            layer.Add(xEntry);
-        //        }
-        //        else
-        //        {
-        //            recordLayer((VerticalStackLayout)entry, layer);
-        //        }
-        //    }
-
-        //    parentXmlLayer.Add(layer);
-        //}
 
         private void backupBut_Clicked(object sender, EventArgs e)
         {
@@ -408,9 +269,6 @@ namespace MauiApp2
             }
             else
             {
-                //site = ((rootVSL.Children[0] as HorizontalStackLayout).Children[1] as Entry).Text;
-                //login = ((rootVSL.Children[1] as HorizontalStackLayout).Children[1] as Entry).Text;
-                //password = ((rootVSL.Children[2] as HorizontalStackLayout).Children[1] as Entry).Text;
                 site = MainRecordCollection.subrecords[0].entry.Text;
                 login = MainRecordCollection.subrecords[1].entry.Text;
                 password = MainRecordCollection.subrecords[2].entry.Text;
@@ -427,7 +285,8 @@ namespace MauiApp2
             storeAuth(login, password);
             authBut.IsEnabled = false;
 
-            rootVSL.Clear();
+            MainRecordCollection.Clear();
+            MainRecordCollection.subrecords.Clear();
         }
 
         private void storeAuth(string login, string password)

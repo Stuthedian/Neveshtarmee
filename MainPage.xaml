@@ -5,27 +5,14 @@
              x:Class="MauiApp2.MainPage">
     <Grid x:Name="grid">
         <Grid.RowDefinitions>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="5*"/>
             <RowDefinition Height="*" />
-            <RowDefinition Height="3*" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
-
         <ScrollView Grid.Row="0" Grid.Column="0" Orientation="Both">
-            <VerticalStackLayout Padding="30,0" Spacing="25" >
-                <Label x:Name="rootlabel"
-                    Text="Hello, World!"
-                    Style="{StaticResource Headline}"
-                    SemanticProperties.HeadingLevel="Level1" />
-                <VerticalStackLayout x:Name="rootVSL">
-                    <HorizontalStackLayout x:Name="rootHSL">
-                        <Label Text="•" VerticalTextAlignment="Center" FontSize="26" />
-                        <Entry Completed="Entry_Completed"  Focused="Entry_Focused"></Entry>
-                    </HorizontalStackLayout>
-                </VerticalStackLayout>
-            </VerticalStackLayout>
+            <controls:RecordCollection x:Name="MainRecordCollection"/>
         </ScrollView>
         <ScrollView Grid.Row="1" Grid.Column="0" Orientation="Horizontal">
             <HorizontalStackLayout Spacing="1">
@@ -41,9 +28,6 @@
                 <Button x:Name="authBut" Text="auth" Clicked="authBut_Clicked"/>
                 <Button x:Name="resetAuthBut" Text="reset auth" Clicked="resetAuthBut_Clicked"/>
             </HorizontalStackLayout>
-        </ScrollView>
-        <ScrollView Grid.Row="2" Grid.Column="0" Orientation="Both">
-            <controls:RecordCollection x:Name="MainRecordCollection"/>
         </ScrollView>
     </Grid>
 </ContentPage>
